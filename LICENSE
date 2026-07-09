@@ -1,0 +1,30 @@
+Python Quiz — License
+
+Copyright (c) 2026 David
+
+This work (the application code and the compiled question set in this folder)
+is licensed under the Creative Commons Attribution-NonCommercial 4.0
+International License (CC BY-NC 4.0).
+
+You are free to:
+  - Share  — copy and redistribute the material in any medium or format.
+  - Adapt  — remix, transform, and build upon the material.
+
+Under the following terms:
+  - Attribution — You must give appropriate credit, provide a link to this
+    license, and indicate if changes were made.
+  - NonCommercial — You may not use the material for commercial purposes.
+
+This makes the project free to use for personal and educational purposes.
+
+Full license text: https://creativecommons.org/licenses/by-nc/4.0/legalcode
+Summary:           https://creativecommons.org/licenses/by-nc/4.0/
+
+------------------------------------------------------------------------------
+Third-party content
+
+The quiz questions in `questions.js` are adapted from the community repository
+Ebazhanov/linkedin-skill-assessments-quizzes, which is distributed under the
+MIT License. Credit for the original question content belongs to that project
+and its contributors:
+  https://github.com/Ebazhanov/linkedin-skill-assessments-quizzes

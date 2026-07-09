@@ -3,29 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Python Quiz</title>
+    <title>Dev Quiz</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="app">
-      <!-- Start screen -->
-      <section id="start-screen" class="card screen">
-        <h1 class="title">🐍 Python Quiz</h1>
-        <p class="subtitle">
-          Test your Python knowledge with
-          <span id="total-count">0</span> community questions.
-        </p>
+      <!-- Stack selection screen -->
+      <section id="stack-screen" class="card screen">
+        <h1 class="title">Dev Quiz</h1>
+        <p class="subtitle">Pick a stack to practice.</p>
 
-        <div class="field">
-          <label class="field-label" for="length-select">How many questions?</label>
-          <div id="length-options" class="length-options" role="radiogroup" aria-label="Number of questions">
-            <!-- length buttons injected by app.js -->
-          </div>
+        <div id="stack-options" class="stack-options" role="list">
+          <!-- stack cards injected by app.js -->
         </div>
-
-        <button id="start-btn" class="btn btn-primary btn-block" type="button">
-          Start quiz
-        </button>
 
         <p class="credit">
           Questions adapted from the community repo
@@ -36,6 +26,29 @@
             >Ebazhanov/linkedin-skill-assessments-quizzes</a
           >. All credit to the original authors.
         </p>
+      </section>
+
+      <!-- Length selection screen -->
+      <section id="start-screen" class="card screen hidden">
+        <button id="change-stack-btn" class="back-link" type="button">
+          &larr; Change stack
+        </button>
+        <h1 id="start-title" class="title">Quiz</h1>
+        <p class="subtitle">
+          Test your knowledge with
+          <span id="total-count">0</span> community questions.
+        </p>
+
+        <div class="field">
+          <label class="field-label">How many questions?</label>
+          <div id="length-options" class="length-options" role="radiogroup" aria-label="Number of questions">
+            <!-- length buttons injected by app.js -->
+          </div>
+        </div>
+
+        <button id="start-btn" class="btn btn-primary btn-block" type="button">
+          Start quiz
+        </button>
       </section>
 
       <!-- Quiz screen -->
@@ -79,7 +92,9 @@
       </section>
     </main>
 
-    <script src="questions.js"></script>
+    <script src="questions-python.js"></script>
+    <script src="questions-react.js"></script>
+    <script src="questions-javascript.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

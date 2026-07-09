@@ -86,7 +86,66 @@ body {
   color: var(--muted);
 }
 
+/* ---------- Stack selection screen ---------- */
+
+.stack-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.stack-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 22px 14px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: transparent;
+  color: var(--text);
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+}
+
+.stack-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.stack-card .stack-icon {
+  font-size: 2.2rem;
+  line-height: 1;
+}
+
+.stack-card .stack-name {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.stack-card .stack-count {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
 /* ---------- Start screen ---------- */
+
+.back-link {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 14px;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.back-link:hover {
+  color: var(--accent);
+}
 
 .field {
   margin-bottom: 24px;

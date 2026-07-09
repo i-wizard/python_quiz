@@ -1,15 +1,23 @@
 /*
- * Python Quiz engine — vanilla JS, no dependencies.
- * Reads questions from window.QUIZ_DATA (see questions.js).
+ * Dev Quiz engine — vanilla JS, no dependencies.
+ * Reads quiz banks from window.QUIZ_BANKS (see questions-*.js). Each bank is
+ * { id, name, icon, questions: [ {question, options:[{text, correct}], reference} ] }.
  */
 (function () {
   "use strict";
 
-  var ALL_QUESTIONS = Array.isArray(window.QUIZ_DATA) ? window.QUIZ_DATA : [];
+  var BANKS_MAP = window.QUIZ_BANKS || {};
+  // Preferred display order; any other banks are appended in insertion order.
+  var PREFERRED_ORDER = ["python", "react", "javascript"];
+  var BANKS = orderedBanks(BANKS_MAP);
   var LENGTH_CHOICES = [10, 20, 50, "All"];
+
+  // Questions for the currently-selected stack (set on stack selection).
+  var ALL_QUESTIONS = [];
 
   // --- Session state -------------------------------------------------------
   var state = {
+    bank: null, // the selected bank object
     questions: [], // questions for this session (shuffled, options shuffled)
     index: 0,
     score: 0,
@@ -20,9 +28,13 @@
 
   // --- Element references ---------------------------------------------------
   var el = {
+    stackScreen: document.getElementById("stack-screen"),
     startScreen: document.getElementById("start-screen"),
     quizScreen: document.getElementById("quiz-screen"),
     resultsScreen: document.getElementById("results-screen"),
+    stackOptions: document.getElementById("stack-options"),
+    startTitle: document.getElementById("start-title"),
+    changeStackBtn: document.getElementById("change-stack-btn"),
     totalCount: document.getElementById("total-count"),
     lengthOptions: document.getElementById("length-options"),
     startBtn: document.getElementById("start-btn"),
@@ -42,6 +54,21 @@
   };
 
   // --- Helpers --------------------------------------------------------------
+
+  /** Return bank objects sorted by PREFERRED_ORDER, then any remaining. */
+  function orderedBanks(map) {
+    var keys = Object.keys(map);
+    keys.sort(function (a, b) {
+      var ia = PREFERRED_ORDER.indexOf(a);
+      var ib = PREFERRED_ORDER.indexOf(b);
+      if (ia === -1) ia = PREFERRED_ORDER.length;
+      if (ib === -1) ib = PREFERRED_ORDER.length;
+      return ia - ib;
+    });
+    return keys.map(function (k) {
+      return map[k];
+    });
+  }
 
   /** Fisher-Yates shuffle (returns a new array). */
   function shuffle(arr) {
@@ -90,13 +117,55 @@
   }
 
   function show(screen) {
+    el.stackScreen.classList.add("hidden");
     el.startScreen.classList.add("hidden");
     el.quizScreen.classList.add("hidden");
     el.resultsScreen.classList.add("hidden");
     screen.classList.remove("hidden");
   }
 
-  // --- Start screen ---------------------------------------------------------
+  // --- Stack selection screen ----------------------------------------------
+
+  function buildStackOptions() {
+    el.stackOptions.innerHTML = "";
+    BANKS.forEach(function (bank) {
+      var card = document.createElement("button");
+      card.type = "button";
+      card.className = "stack-card";
+      card.setAttribute("role", "listitem");
+
+      var icon = document.createElement("span");
+      icon.className = "stack-icon";
+      icon.textContent = bank.icon || "❓";
+
+      var name = document.createElement("span");
+      name.className = "stack-name";
+      name.textContent = bank.name;
+
+      var count = document.createElement("span");
+      count.className = "stack-count";
+      count.textContent = bank.questions.length + " questions";
+
+      card.appendChild(icon);
+      card.appendChild(name);
+      card.appendChild(count);
+      card.addEventListener("click", function () {
+        selectStack(bank);
+      });
+      el.stackOptions.appendChild(card);
+    });
+  }
+
+  /** Lock in a stack and move to the length-selection screen. */
+  function selectStack(bank) {
+    state.bank = bank;
+    ALL_QUESTIONS = bank.questions;
+    el.startTitle.textContent = bank.icon + " " + bank.name + " Quiz";
+    buildLengthOptions();
+    show(el.startScreen);
+  }
+
+  // --- Length selection screen ----------------------------------------------
 
   function buildLengthOptions() {
     el.totalCount.textContent = String(ALL_QUESTIONS.length);
@@ -285,13 +354,16 @@
 
   // --- Wiring ---------------------------------------------------------------
 
+  el.changeStackBtn.addEventListener("click", function () {
+    show(el.stackScreen);
+  });
   el.startBtn.addEventListener("click", startQuiz);
   el.nextBtn.addEventListener("click", nextQuestion);
   el.restartBtn.addEventListener("click", function () {
-    show(el.startScreen);
+    show(el.stackScreen);
   });
   el.quitBtn.addEventListener("click", function () {
-    show(el.startScreen);
+    show(el.stackScreen);
   });
 
   // Enter advances once a question has been answered.
@@ -305,12 +377,10 @@
 
   // --- Init -----------------------------------------------------------------
 
-  if (!ALL_QUESTIONS.length) {
-    el.startBtn.disabled = true;
-    el.subtitleFallback =
-      "Could not load questions. Make sure questions.js is present.";
-    document.querySelector(".subtitle").textContent = el.subtitleFallback;
+  if (!BANKS.length) {
+    el.stackOptions.textContent =
+      "Could not load any quizzes. Make sure the questions-*.js files are present.";
   } else {
-    buildLengthOptions();
+    buildStackOptions();
   }
 })();

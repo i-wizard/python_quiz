@@ -1,4 +1,4 @@
-Python Quiz — License
+Dev Quiz — License
 
 Copyright (c) 2026 David
 
@@ -23,7 +23,8 @@ Summary:           https://creativecommons.org/licenses/by-nc/4.0/
 ------------------------------------------------------------------------------
 Third-party content
 
-The quiz questions in `questions.js` are adapted from the community repository
+The quiz questions in the bundled `questions-*.js` files (Python, React, and
+JavaScript) are adapted from the community repository
 Ebazhanov/linkedin-skill-assessments-quizzes, which is distributed under the
 MIT License. Credit for the original question content belongs to that project
 and its contributors:
